@@ -3,5 +3,5 @@
 	
 AS
 BEGIN
-	SELECT * FROM dispatcher WHERE id_dispatcher = @id
+	SELECT * FROM dispatcher WHERE id_dispatcher = @id AND active = 1
 END

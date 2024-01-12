@@ -16,7 +16,7 @@ public class SqlDataAccess : ISqlDataAccess
     public async Task<IEnumerable<T>> LoadData<T, U>(string storedProcedure, U parameters, string connectionId = "Default")
     {
         using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
-
+        Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
         return await connection.QueryAsync<T>(storedProcedure, parameters,
                                  commandType: CommandType.StoredProcedure);
     }
