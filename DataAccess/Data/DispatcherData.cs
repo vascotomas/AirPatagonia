@@ -25,11 +25,18 @@ public class DispatcherData : IDispatcherData
 
     public async Task<DispatcherModel?> GetDispatcher(int id)
     {
-        var results = await _db.LoadData<DispatcherModel, dynamic>(
+        var result = await _db.LoadData<DispatcherModel, dynamic>(
             storedProcedure: "spDispatcher_Get",
-            new { IdDispatcher = id });
+            new { id = id });
 
-        return results.FirstOrDefault();
+        if (result.FirstOrDefault() == null) { return null; }
+
+        DispatcherModel dispatcher = result.FirstOrDefault();
+        var documentTypes = await GetDocumentTypes();
+        dispatcher.DocumentType = documentTypes.FirstOrDefault(x => x.IdDocumentType == dispatcher.IdDocumentType);
+
+
+        return dispatcher;
     }
 
     public Task InsertDispatcher(DispatcherModel dispatcher) =>
@@ -44,8 +51,8 @@ public class DispatcherData : IDispatcherData
                          dispatcher.NoDocument
                      });
 
-    public Task DisableDispatcher(DispatcherModel dispatcher) =>
-        _db.SaveData(storedProcedure: "spDispatcher_Disable", new { dispatcher.Active, dispatcher.IdDispatcher });
+    public Task DisableDispatcher(bool status,int id) =>
+        _db.SaveData(storedProcedure: "spDispatcher_Disable", new { status = Convert.ToByte(status), id });
 
     public Task<IEnumerable<DocumentType>> GetDocumentTypes() => _db.LoadData<DocumentType, dynamic>(storedProcedure: "spDocumentType_GetAll", new { });
 }

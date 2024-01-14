@@ -10,27 +10,27 @@ public static class Api
         app.MapGet(pattern: "/Dispatchers", GetDispatchers);
         app.MapGet(pattern: "/Dispatchers/{id}", GetDispatcher);
         app.MapPost(pattern: "/Dispatchers", InsertDispatchers);
-        app.MapPut (pattern: "/Dispatchers", DisableDispatcher);
+        app.MapPut(pattern: "/Dispatchers", DisableDispatcher);
     }
 
-    private static   async Task<IResult> GetDispatchers(IDispatcherData data)
+    private static async Task<IResult> GetDispatchers(IDispatcherData data)
     {
         try
         {
             return Results.Ok(await data.GetDispatchers());
         }
-        catch ( Exception ex)
+        catch (Exception ex)
         {
             return Results.Problem(ex.Message);
         }
     }
-    
+
     private static async Task<IResult> GetDispatcher(int id, IDispatcherData data)
     {
         try
         {
             var results = await data.GetDispatcher(id);
-            if(results is null) return Results.NotFound();
+            if (results is null) return Results.NotFound();
             return Results.Ok(results);
         }
         catch (Exception ex)
@@ -39,7 +39,7 @@ public static class Api
         }
     }
 
-    private static async Task<IResult> InsertDispatchers(DispatcherModel model,IDispatcherData data)
+    private static async Task<IResult> InsertDispatchers(DispatcherModel model, IDispatcherData data)
     {
         try
         {
@@ -52,11 +52,11 @@ public static class Api
         }
     }
 
-    private static async Task<IResult> DisableDispatcher(DispatcherModel model, IDispatcherData data)
+    private static async Task<IResult> DisableDispatcher(bool status, int id, IDispatcherData data)
     {
         try
         {
-            await data.DisableDispatcher(model);
+            await data.DisableDispatcher(status, id);
             return Results.Ok();
         }
         catch (Exception ex)
