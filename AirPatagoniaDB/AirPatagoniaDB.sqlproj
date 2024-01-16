@@ -134,6 +134,10 @@
     <Build Include="dbo\Stored Procedures\Dispatcher\spDispatcher_GetAll.sql" />
     <Build Include="dbo\Stored Procedures\Dispatcher\spDispatcher_Insert.sql" />
     <Build Include="dbo\Stored Procedures\Document Type\spDocumentType_GetAll.sql" />
+    <Build Include="dbo\Tables\country.sql" />
+    <Build Include="dbo\Tables\city.sql" />
+    <Build Include="dbo\Tables\airport.sql" />
+    <Build Include="dbo\Tables\fly.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="dbo\Script.PostDeployment.sql" />
