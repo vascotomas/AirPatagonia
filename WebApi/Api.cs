@@ -1,4 +1,5 @@
 ﻿using DataAccess.Data;
+using HashidsNet;
 using System.Runtime.CompilerServices;
 
 namespace WebApi;
@@ -25,12 +26,17 @@ public static class Api
         }
     }
 
-    private static async Task<IResult> GetDispatcher(int id, IDispatcherData data)
+    private static async Task<IResult> GetDispatcher(string id, IDispatcherData data, IHashids hashids)
     {
         try
         {
-            var results = await data.GetDispatcher(id);
+            var rawId = hashids.Decode(id);
+            if(rawId.Length == 0)
+                return Results.NotFound();
+        
+            var results = await data.GetDispatcher(rawId[0]);
             if (results is null) return Results.NotFound();
+
             return Results.Ok(results);
         }
         catch (Exception ex)
