@@ -1,4 +1,5 @@
 using DataAccess.DbAccess;
+using HashidsNet;
 using WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddSwaggerGen();
 //Singletons
 builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddSingleton<IDispatcherData, DispatcherData>();
+builder.Services.AddSingleton<IHashids>(_ => new Hashids("tomas",11));
 
 
 var app = builder.Build();
